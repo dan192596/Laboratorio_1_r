@@ -1,6 +1,6 @@
-1. Vectores y matrices
+# 1. Vectores y matrices
 
-1.1 Cree un vector por cada estudiante que almacene los 5 registros
+## 1.1 Cree un vector por cada estudiante que almacene los 5 registros
 ```{r}
 s1 <- c(50.4,62.3,92.1,77.6,TRUE)
 s2 <- c(41.7,87.9,75.3,72.4,FALSE)
@@ -9,13 +9,13 @@ s4 <- c(65.4,85.1,92.3,96.8,TRUE)
 s5 <- c(70.4,88.2,95.2,90.7,TRUE)
 ```
 
-1.2 Cree el vector studens_vector, sus elementos seran cada uno de los vectores creados anteriormente
+## 1.2 Cree el vector studens_vector, sus elementos seran cada uno de los vectores creados anteriormente
 
 ```{r}
 students_vector <- c(s1, s2, s3, s4, s5)
 ```
 
-1.3 Construya una matriz de nombre students_matrix que reciba como parametro students_vector
+## 1.3 Construya una matriz de nombre students_matrix que reciba como parametro students_vector
 
 ```{r}
 students_matrix <- matrix(students_vector, byrow = TRUE, nrow = 5)
@@ -23,3 +23,145 @@ students_matrix
 
 ```
 
+# 2. Nombrado de una matriz
+
+## 2.1 Cree los vectores name_students y name_courses_legal_age
+```{r}
+name_students <- c("Lily Brown", "Davis Moore", "Susan Taylor", "Mike Jones", "Tom Hill")
+name_courses_legal_age <- c("TIC", "Accounting", "Psychology", "Ethics", "Legal_age")
+```
+
+## 2.2 Utilice los vectores para cerar el nombrado de filas y columnas de la matriz students_vector. 
+
+```{r}
+colnames(students_matrix) <- name_courses_legal_age
+rownames(students_matrix) <- name_students
+students_matrix
+
+```
+
+# 3. rowSums, cbind
+## 3.1 Cree el vector  total_grade_student que contenga la sumatorio de todas las notas por cada estudiante, utilice la funcion rowSum para hacerlo, tome en cuenta que solo debe considerar las primeras 4 columas porque la ultima corresponde a la mayoria de eddad
+
+```{r}
+students_matrix
+total_grade_student <- rowSums(students_matrix[, c(1,2,3,4)])
+total_grade_student
+
+```
+## Pegue el vector total_grade con la matriz de estudiatnes
+
+```{r}
+result_students <- cbind(students_matrix, total_grade_student)
+
+result_students
+```
+
+
+# Seleccionando elementos de una matriz
+
+## 4.1 De la matriz result_students seleccione la fila 1, 3, y 5 y las columnas 3, y 4. Almacene el resultado en una variable de nombre selected_elements e imprima el resultado
+
+```{r}
+selected_elements <- result_students[c(1,3,5), c(2, 4)]
+selected_elements
+```
+
+
+# Data frames
+
+## 5.1 Construya un data frame de nombre students_grades_df utilizando la matriz result_students como parametro
+
+
+```{r}
+students_grades_df <- data.frame(result_students) 
+```
+
+## Utilice la funcion subset en students_grades_df para filtrar por la siguiente condicion> Que la columna Accounting sea mayor a 80 y que Legal age sea verdaderoVos, 
+
+
+```{r}
+subset(students_grades_df, students_grades_df$Accounting>80 & students_grades_df$Legal_age)
+```
+
+# 6. Funciones, condicionales y bucles
+
+## 6.1 Construya una funcion de nombre students_projection que recorra la matriz result students
+
+
+```{r}
+students_projection <- function(students){
+  for(j in 1:nrow(students)){
+    for(i in 1:ncol(students)){
+      if(i!=5){
+        print(students[j,i])  
+      }
+    }
+  }
+}
+
+students_projection(result_students)
+
+```
+## 6.2 Al recorrer filas y columnas obtendra el valor de la nota que se encuentra en cada celda de la matriz, con este valor aplique las siguientes condiciones para imprimir un mensaje
+
+```{r}
+students_projection <- function(students){
+  for(j in 1:nrow(students)){
+    for(i in 1:ncol(students)){
+      if(i<5){
+        print(students[j,i])
+        if(students[j,i]<=45){
+          print("Student at risk")
+        }
+        if(students[j,i]>45 & students[j,i]<61){
+          print("Student may be approved")
+        }
+        if(students[j,i]>=61){
+          print("Student approved")
+        }
+      }
+    }
+  }
+}
+
+students_projection(result_students)
+```
+
+# 7. Data frames y lapply
+
+## 7.1 Construya la funcion index_education que reciba un parametro de nombre grade. 
+
+
+```{r}
+index_education <- function(grade){
+  return((1+(grade/100))/2)
+}
+```
+
+
+## 7.2 Utilice students_grade_df seleccionando todas las filas y solamente las primeras 4 columnas, luego asignela a all_students_grade
+
+```{r}
+all_students_grade <- students_grades_df[, c(1,2, 3, 4)]
+all_students_grade
+```
+
+
+## Utilice lapply pasando de parametros all_students_grade y la funcion index_education
+
+
+```{r}
+lapply(all_students_grade, index_education)
+```
+
+# 8. Math utilities
+## 81 Utilice students_grade_df y obtenga el promedio de las 4 asignaturas luego asigne los resultados en un vector de nombre socre_mean
+
+
+
+```{r}
+
+score_mean <- lapply(colSums(students_grades_df[, c(1,2,3,4)]), function(x){x/4})
+score_mean
+```
