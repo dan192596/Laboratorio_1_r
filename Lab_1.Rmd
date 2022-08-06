@@ -1,0 +1,25 @@
+1. Vectores y matrices
+
+1.1 Cree un vector por cada estudiante que almacene los 5 registros
+```{r}
+s1 <- c(50.4,62.3,92.1,77.6,TRUE)
+s2 <- c(41.7,87.9,75.3,72.4,FALSE)
+s3 <- c(30.3,67.8,69.3,71.2,FALSE)
+s4 <- c(65.4,85.1,92.3,96.8,TRUE)
+s5 <- c(70.4,88.2,95.2,90.7,TRUE)
+```
+
+1.2 Cree el vector studens_vector, sus elementos seran cada uno de los vectores creados anteriormente
+
+```{r}
+students_vector <- c(s1, s2, s3, s4, s5)
+```
+
+1.3 Construya una matriz de nombre students_matrix que reciba como parametro students_vector
+
+```{r}
+students_matrix <- matrix(students_vector, byrow = TRUE, nrow = 5)
+students_matrix
+
+```
+
